@@ -3,7 +3,7 @@ import { DIFF_LIMITS } from "../config";
 import { chatModelFast } from "../llm/chat-model";
 import { v4 as uuid } from "uuid";
 
-function parseFindings(raw: string): Omit<Finding, "id" | "agent">[] {
+const parseFindings = (raw: string): Omit<Finding, "id" | "agent">[] => {
   const cleaned = raw.replace(/```json|```/g, "").trim();
   try {
     const parsed = JSON.parse(cleaned);
@@ -11,9 +11,9 @@ function parseFindings(raw: string): Omit<Finding, "id" | "agent">[] {
   } catch {
     return [];
   }
-}
+};
 
-export async function testQualityNode(state: ReviewState): Promise<Partial<ReviewState>> {
+export const testQualityNode = async (state: ReviewState): Promise<Partial<ReviewState>> => {
   const testFiles = state.files.filter(
     (f) =>
       f.includes(".test.") || f.includes(".spec.") || f.includes("__tests__")
@@ -44,4 +44,4 @@ Return ONLY a JSON array of findings with: severity, file, line, title, descript
 
   console.log(`[test_quality] Done. ${testFindings.length} findings.`);
   return { testFindings };
-}
+};

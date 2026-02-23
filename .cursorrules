@@ -6,9 +6,11 @@ Do not explain the rules. Just follow them.
 
 CORE RULES:
 - Always be concise and direct.
+- Always when using Express do a separation into Controllers/Routes/Services
 - Always use config folder for configuration values and put ion config yaml
 - Always write in TypeScript and ESM, not CommonJS and JavaScript
-- Never ever import frpom JS files in TS project 
+- Never ever import frpom JS files in TS project
+- Always use Arrow Functions where you can and Closures
 - Always use config folder for configuration stuff
 - Constant values should be in constants file
 - MD files and docs should be in docs folder except the main Readme.MD

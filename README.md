@@ -47,6 +47,36 @@ cp config/env.example .env
 - `npm run test` — Run tests
 - `npm run dev` — Start dev server
 - `npm run lint` — ESLint
+- `npm run review:examples` — Run review on `code-examples/` (no server)
+
+## Try it
+
+**1. Health check**
+
+```bash
+npm run build && npm start
+# In another terminal:
+curl http://localhost:3000/health
+# → {"ok":true}
+```
+
+**2. Run review via HTTP (server)**
+
+With the server running and `GROQ_API_KEY` or `ANTHROPIC_API_KEY` in `.env`:
+
+```bash
+curl -X POST http://localhost:3000/webhook/review
+```
+
+Returns JSON: `{ "ok": true, "score": 85, "report": "..." }`. Runs the full pipeline on `code-examples/` (takes ~30–90s).
+
+**3. Review from CLI (no server)**
+
+```bash
+npm run review:examples
+```
+
+Runs the same pipeline and prints the report to stdout.
 
 ## Structure
 

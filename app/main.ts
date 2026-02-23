@@ -1,6 +1,6 @@
 import "dotenv/config";
 import express from "express";
-import { webhookRouter } from "./api/webhook.controller";
+import { webhookRouter } from "./routes/webhook.routes";
 import { DEFAULT_PORT } from "./config";
 
 const app = express();

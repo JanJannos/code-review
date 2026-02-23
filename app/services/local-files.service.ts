@@ -2,7 +2,7 @@ import fs from "fs/promises";
 import path from "path";
 import { CODE_EXAMPLES_PATH } from "../config";
 
-export async function loadCodeExamples(): Promise<{ diff: string; files: string[] }> {
+export const loadCodeExamples = async (): Promise<{ diff: string; files: string[] }> => {
   const root = path.join(process.cwd(), CODE_EXAMPLES_PATH);
   const entries = await fs.readdir(root, { withFileTypes: true });
   const files: string[] = [];
@@ -25,4 +25,4 @@ export async function loadCodeExamples(): Promise<{ diff: string; files: string[
     diff: chunks.join("\n"),
     files,
   };
-}
+};

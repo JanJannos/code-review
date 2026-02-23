@@ -4,7 +4,7 @@ import { DIFF_LIMITS } from "../config";
 import { chatModelFast } from "../llm/chat-model";
 import { v4 as uuid } from "uuid";
 
-function parseFindings(raw: string): Omit<Finding, "id" | "agent">[] {
+const parseFindings = (raw: string): Omit<Finding, "id" | "agent">[] => {
   const cleaned = raw.replace(/```json|```/g, "").trim();
   try {
     const parsed = JSON.parse(cleaned);
@@ -12,9 +12,9 @@ function parseFindings(raw: string): Omit<Finding, "id" | "agent">[] {
   } catch {
     return [];
   }
-}
+};
 
-export async function architectureNode(state: ReviewState): Promise<Partial<ReviewState>> {
+export const architectureNode = async (state: ReviewState): Promise<Partial<ReviewState>> => {
   console.log("[architecture] LLM call...");
   const kb = new KnowledgeBaseService();
   const relevantADRs = await kb.search(state.diff.slice(0, DIFF_LIMITS.ADR_SEARCH));
@@ -45,4 +45,4 @@ Return ONLY a JSON array of findings with: severity, file, line, title, descript
 
   console.log(`[architecture] Done. ${architectureFindings.length} findings.`);
   return { architectureFindings };
-}
+};

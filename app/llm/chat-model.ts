@@ -5,7 +5,7 @@ import { MODELS } from "../config";
 
 type ChatModel = InstanceType<typeof ChatGroq> | InstanceType<typeof ChatAnthropic>;
 
-function createModel(tier: "large" | "fast"): ChatModel {
+const createModel = (tier: "large" | "fast"): ChatModel => {
   if (process.env.GROQ_API_KEY) {
     return new ChatGroq({
       model: tier === "large" ? MODELS.GROQ_LARGE : MODELS.GROQ_FAST,
@@ -22,7 +22,7 @@ function createModel(tier: "large" | "fast"): ChatModel {
   throw new Error(
     "GROQ_API_KEY or ANTHROPIC_API_KEY required. Add to .env or run: GROQ_API_KEY=gsk_... npm run review:examples"
   );
-}
+};
 
 export const chatModelLarge = createModel("large");
 export const chatModelFast = createModel("fast");

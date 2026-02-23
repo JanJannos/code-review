@@ -1,6 +1,5 @@
 import path from "path";
 import { fileURLToPath } from "url";
-import nodeExternals from "webpack-node-externals";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -16,7 +15,6 @@ export default {
   experiments: {
     outputModule: true,
   },
-  externals: [nodeExternals()],
   resolve: {
     extensions: [".ts", ".js"],
     extensionAlias: {

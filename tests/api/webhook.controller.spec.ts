@@ -13,7 +13,7 @@ describe("webhook controller", () => {
 
   beforeEach(async () => {
     vi.resetModules();
-    const { webhookRouter } = await import("../../app/api/webhook.controller");
+    const { webhookRouter } = await import("../../app/routes/webhook.routes");
     app = express();
     app.use(express.json());
     app.use("/webhook", webhookRouter);

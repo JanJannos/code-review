@@ -3,7 +3,7 @@ import { DIFF_LIMITS } from "../config";
 import { chatModelLarge } from "../llm/chat-model";
 import { v4 as uuid } from "uuid";
 
-function parseFindings(raw: string): Omit<Finding, "id" | "agent">[] {
+const parseFindings = (raw: string): Omit<Finding, "id" | "agent">[] => {
   const cleaned = raw.replace(/```json|```/g, "").trim();
   try {
     const parsed = JSON.parse(cleaned);
@@ -11,9 +11,9 @@ function parseFindings(raw: string): Omit<Finding, "id" | "agent">[] {
   } catch {
     return [];
   }
-}
+};
 
-export async function securityNode(state: ReviewState): Promise<Partial<ReviewState>> {
+export const securityNode = async (state: ReviewState): Promise<Partial<ReviewState>> => {
   console.log("[security] LLM call...");
   const prompt = `
 You are a senior application security engineer. Analyze this pull request diff for security vulnerabilities.
@@ -39,4 +39,4 @@ Be conservative — only report real issues with clear evidence.
 
   console.log(`[security] Done. ${securityFindings.length} findings.`);
   return { securityFindings };
-}
+};

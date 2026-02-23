@@ -7,7 +7,7 @@ import { testQualityNode } from "../agents/test-quality.agent";
 import { documentationNode } from "../agents/documentation.agent";
 import { aggregatorNode } from "../agents/aggregator.agent";
 
-export function buildReviewGraph() {
+export const buildReviewGraph = () => {
   const graph = new StateGraph(ReviewStateAnnotation)
     .addNode("orchestrator", orchestratorNode)
     .addNode("security", securityNode)
@@ -27,4 +27,4 @@ export function buildReviewGraph() {
     .addEdge("aggregator", END);
 
   return graph.compile();
-}
+};

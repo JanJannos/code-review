@@ -1,7 +1,7 @@
 import { ReviewState } from "../graph/state";
 import { GitService } from "../services/git.service";
 
-export async function orchestratorNode(state: ReviewState): Promise<Partial<ReviewState>> {
+export const orchestratorNode = async (state: ReviewState): Promise<Partial<ReviewState>> => {
   console.log("[orchestrator] Fetching diff and files...");
   const git = new GitService();
   const { diff, files } = await git.getPRDiff(state.prUrl);
@@ -23,4 +23,4 @@ export async function orchestratorNode(state: ReviewState): Promise<Partial<Revi
     language: langMap[ext] ?? "Unknown",
     status: "running",
   };
-}
+};

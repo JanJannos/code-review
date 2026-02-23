@@ -1,8 +1,8 @@
 import { describe, it, expect } from "vitest";
 import type { Finding } from "../app/graph/state";
 
-// Test deduplication logic (exported for testing or replicate)
-function deduplicateFindings(findings: Finding[]): Finding[] {
+// Test deduplication logic (replicate of aggregator)
+const deduplicateFindings = (findings: Finding[]): Finding[] => {
   const seen = new Set<string>();
   return findings.filter((f) => {
     const key = `${f.file}:${f.line ?? ""}:${f.title}`;
@@ -10,7 +10,7 @@ function deduplicateFindings(findings: Finding[]): Finding[] {
     seen.add(key);
     return true;
   });
-}
+};
 
 describe("aggregator deduplication", () => {
   it("removes duplicate findings by file:line:title", () => {
