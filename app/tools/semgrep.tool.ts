@@ -1,6 +1,6 @@
 import { tool } from "@langchain/core/tools";
 import { z } from "zod";
-import { SemgrepService } from "../services/semgrep.service.js";
+import { SemgrepService } from "../services/semgrep.service";
 
 export const semgrepTool = tool(
   async ({ files }) => {

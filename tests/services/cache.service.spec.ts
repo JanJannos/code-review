@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { CacheService } from "../../app/services/cache.service.js";
+import { CacheService } from "../../app/services/cache.service";
 
 vi.mock("ioredis", () => ({
   default: vi.fn().mockImplementation(() => ({

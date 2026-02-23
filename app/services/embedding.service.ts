@@ -1,5 +1,5 @@
 import { Pinecone } from "@pinecone-database/pinecone";
-import { PINECONE_DEFAULT_INDEX } from "../constants.js";
+import { PINECONE_DEFAULT_INDEX } from "../config";
 
 export class EmbeddingService {
   private client: Pinecone | null = null;

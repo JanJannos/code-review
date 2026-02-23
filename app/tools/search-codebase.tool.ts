@@ -1,6 +1,6 @@
 import { tool } from "@langchain/core/tools";
 import { z } from "zod";
-import { KnowledgeBaseService } from "../services/knowledge-base.service.js";
+import { KnowledgeBaseService } from "../services/knowledge-base.service";
 
 export const searchCodebaseTool = tool(
   async ({ query }) => {

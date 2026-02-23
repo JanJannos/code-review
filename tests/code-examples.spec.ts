@@ -1,21 +1,22 @@
 import { describe, it, expect, vi, beforeAll } from "vitest";
 import path from "path";
 import fs from "fs/promises";
-import { loadCodeExamples } from "../app/services/local-files.service.js";
+import { loadCodeExamples } from "../app/services/local-files.service";
+import { GitService } from "../app/services/git.service";
 
-vi.mock("../app/services/git.service.js", () => ({
+vi.mock("../app/services/git.service", () => ({
   GitService: vi.fn().mockImplementation(() => ({
     getPRDiff: vi.fn().mockImplementation(async () => loadCodeExamples()),
   })),
 }));
 
-vi.mock("../app/services/notification.service.js", () => ({
+vi.mock("../app/services/notification.service", () => ({
   NotificationService: vi.fn().mockImplementation(() => ({
     postPRComment: vi.fn().mockResolvedValue(undefined),
   })),
 }));
 
-vi.mock("../app/services/report.service.js", () => ({
+vi.mock("../app/services/report.service", () => ({
   ReportService: vi.fn().mockImplementation(() => ({
     save: vi.fn().mockResolvedValue(undefined),
   })),
@@ -41,7 +42,7 @@ describe("code-examples integration", () => {
     expect(diff.length).toBeGreaterThan(0);
 
     if (!process.env.ANTHROPIC_API_KEY) return;
-    const { buildReviewGraph } = await import("../app/graph/review.graph.js");
+    const { buildReviewGraph } = await import("../app/graph/review.graph");
     const graph = buildReviewGraph();
     const result = await graph.invoke({
       prUrl: "https://github.com/test/repo/pull/1",
@@ -50,7 +51,6 @@ describe("code-examples integration", () => {
       diff: "",
       files: [],
       language: "",
-      staticFindings: [],
       securityFindings: [],
       architectureFindings: [],
       testFindings: [],

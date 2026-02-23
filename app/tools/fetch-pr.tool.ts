@@ -1,6 +1,6 @@
 import { tool } from "@langchain/core/tools";
 import { z } from "zod";
-import { GitService } from "../services/git.service.js";
+import { GitService } from "../services/git.service";
 
 export const fetchPRTool = tool(
   async ({ prUrl }) => {

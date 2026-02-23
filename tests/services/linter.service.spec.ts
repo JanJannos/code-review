@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { LinterService } from "../../app/services/linter.service.js";
+import { LinterService } from "../../app/services/linter.service";
 
 const mockLintFiles = vi.fn().mockResolvedValue([]);
 vi.mock("eslint", () => ({

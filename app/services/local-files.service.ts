@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 import path from "path";
-import { CODE_EXAMPLES_PATH } from "../constants.js";
+import { CODE_EXAMPLES_PATH } from "../config";
 
 export async function loadCodeExamples(): Promise<{ diff: string; files: string[] }> {
   const root = path.join(process.cwd(), CODE_EXAMPLES_PATH);

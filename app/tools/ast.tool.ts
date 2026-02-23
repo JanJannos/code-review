@@ -1,6 +1,6 @@
 import { tool } from "@langchain/core/tools";
 import { z } from "zod";
-import { ASTService } from "../services/ast.service.js";
+import { ASTService } from "../services/ast.service";
 
 export const astTool = tool(
   async ({ files }) => {

@@ -1,13 +1,9 @@
-import { ChatAnthropic } from "@langchain/anthropic";
-import { ReviewState, Finding } from "../graph/state.js";
-import { NotificationService } from "../services/notification.service.js";
-import { ReportService } from "../services/report.service.js";
-import { MODELS, SEVERITY_SCORE } from "../constants.js";
-
-const model = new ChatAnthropic({
-  model: MODELS.SONNET,
-  temperature: 0,
-});
+import path from "path";
+import { ReviewState, Finding } from "../graph/state";
+import { NotificationService } from "../services/notification.service";
+import { ReportService } from "../services/report.service";
+import { SEVERITY_SCORE } from "../config";
+import { chatModelFast } from "../llm/chat-model";
 
 function deduplicateFindings(findings: Finding[]): Finding[] {
   const seen = new Set<string>();
@@ -21,7 +17,6 @@ function deduplicateFindings(findings: Finding[]): Finding[] {
 
 export async function aggregatorNode(state: ReviewState): Promise<Partial<ReviewState>> {
   const allFindings = deduplicateFindings([
-    ...state.staticFindings,
     ...state.securityFindings,
     ...state.architectureFindings,
     ...state.testFindings,
@@ -29,22 +24,29 @@ export async function aggregatorNode(state: ReviewState): Promise<Partial<Review
   ]);
 
   const totalScore = allFindings.reduce(
-    (sum, f) => sum + SEVERITY_SCORE[f.severity],
+    (sum, f) => sum + (SEVERITY_SCORE[f.severity] ?? 0),
     0
   );
   const overallScore = Math.max(0, 100 - totalScore);
 
+  const reviewedFiles = state.files.map((f) => path.basename(f));
+
   const prompt = `
 You are a senior engineering lead composing a final code review.
 Synthesize these findings into a clear, constructive review report in Markdown.
+
+REQUIRED: List every file in REVIEWED FILES below. For each file, either show its findings or write "No findings."
 Group by file. Lead with critical/high severity. Be direct but kind.
 End with an overall assessment and score of ${overallScore}/100.
+
+REVIEWED FILES (must include all):
+${reviewedFiles.join("\n")}
 
 FINDINGS:
 ${JSON.stringify(allFindings, null, 2)}
 `;
 
-  const response = await model.invoke([{ role: "user", content: prompt }]);
+  const response = await chatModelFast.invoke(prompt);
   const finalReport = (response.content as string) ?? "";
 
   const notifier = new NotificationService();
@@ -58,5 +60,6 @@ ${JSON.stringify(allFindings, null, 2)}
     markdown: finalReport,
   });
 
+  console.log(`[aggregator] Done. Score: ${overallScore}/100.`);
   return { finalReport, overallScore, status: "complete" };
 }

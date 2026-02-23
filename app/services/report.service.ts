@@ -1,6 +1,4 @@
-import fs from "fs/promises";
-import path from "path";
-import { Finding } from "../graph/state.js";
+import type { Finding } from "../graph/state";
 
 export interface Report {
   prUrl: string;
@@ -10,14 +8,7 @@ export interface Report {
 }
 
 export class ReportService {
-  async save(report: Report): Promise<void> {
-    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-    const dir = path.join(process.cwd(), "reports");
-    await fs.mkdir(dir, { recursive: true });
-    await fs.writeFile(
-      path.join(dir, `review-${timestamp}.json`),
-      JSON.stringify(report, null, 2)
-    );
-    await fs.writeFile(path.join(dir, `review-${timestamp}.md`), report.markdown);
+  async save(_report: Report): Promise<void> {
+    // No-op: reports are not persisted to disk.
   }
 }

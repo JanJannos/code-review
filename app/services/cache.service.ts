@@ -1,5 +1,5 @@
 import Redis from "ioredis";
-import { CACHE_TTL_SECONDS, REDIS_DEFAULT_URL } from "../constants.js";
+import { CACHE_TTL_SECONDS, REDIS_DEFAULT_URL } from "../config";
 
 export class CacheService {
   private client: Redis;

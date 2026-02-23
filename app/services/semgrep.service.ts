@@ -1,5 +1,5 @@
 import { execSync } from "child_process";
-import { SEMGREP_TIMEOUT_MS } from "../constants.js";
+import { SEMGREP_TIMEOUT_MS } from "../config";
 
 export class SemgrepService {
   async scan(files: string[]): Promise<unknown[]> {

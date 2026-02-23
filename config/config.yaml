@@ -1,0 +1,26 @@
+# Config YAML — app configuration
+
+models:
+  anthropic_sonnet: "claude-sonnet-4-20250514"
+  anthropic_haiku: "claude-3-5-haiku-20241022"
+  groq_large: "llama-3.3-70b-versatile"
+  groq_fast: "llama-3.1-8b-instant"
+
+severity_score:
+  critical: 100
+  high: 50
+  medium: 20
+  low: 5
+  info: 1
+
+diff_limits:
+  static: 5000
+  default: 6000
+  adr_search: 1500
+
+semgrep_timeout_ms: 60000
+cache_ttl_seconds: 3600
+default_port: 3000
+redis_default_url: "redis://localhost:6379"
+pinecone_default_index: "code-review"
+code_examples_path: "code-examples"

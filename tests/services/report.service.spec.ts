@@ -1,29 +1,16 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import fs from "fs/promises";
-import { ReportService } from "../../app/services/report.service.js";
-
-vi.mock("fs/promises");
+import { describe, it, expect } from "vitest";
+import { ReportService } from "../../app/services/report.service";
 
 describe("ReportService", () => {
-  let report: ReportService;
-
-  beforeEach(() => {
-    vi.mocked(fs.mkdir).mockResolvedValue(undefined);
-    vi.mocked(fs.writeFile).mockResolvedValue(undefined);
-    report = new ReportService();
-  });
-
-  it("saves JSON and MD files", async () => {
-    await report.save({
-      prUrl: "https://github.com/o/r/pull/1",
-      findings: [],
-      score: 95,
-      markdown: "# Review\nScore: 95",
-    });
-
-    expect(fs.mkdir).toHaveBeenCalledWith(expect.any(String), {
-      recursive: true,
-    });
-    expect(fs.writeFile).toHaveBeenCalledTimes(2);
+  it("save completes without writing to disk", async () => {
+    const report = new ReportService();
+    await expect(
+      report.save({
+        prUrl: "https://github.com/o/r/pull/1",
+        findings: [],
+        score: 95,
+        markdown: "# Review\nScore: 95",
+      })
+    ).resolves.toBeUndefined();
   });
 });

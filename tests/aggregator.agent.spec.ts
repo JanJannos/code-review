@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import type { Finding } from "../app/graph/state.js";
+import type { Finding } from "../app/graph/state";
 
 // Test deduplication logic (exported for testing or replicate)
 function deduplicateFindings(findings: Finding[]): Finding[] {

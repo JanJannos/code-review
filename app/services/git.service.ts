@@ -1,9 +1,13 @@
 import axios from "axios";
+import { loadCodeExamples } from "./local-files.service";
 
 export class GitService {
   private token = process.env.GITHUB_TOKEN ?? "";
 
   async getPRDiff(prUrl: string): Promise<{ diff: string; files: string[] }> {
+    if (prUrl === "local://code-examples") {
+      return loadCodeExamples();
+    }
     const match = prUrl.match(/github\.com\/([^/]+)\/([^/]+)\/pull\/(\d+)/);
     if (!match) throw new Error("Invalid PR URL");
     const [, owner, repo, number] = match;

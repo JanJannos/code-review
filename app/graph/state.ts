@@ -21,10 +21,6 @@ export const ReviewStateAnnotation = Annotation.Root({
   diff: Annotation<string>(),
   files: Annotation<string[]>(),
   language: Annotation<string>(),
-  staticFindings: Annotation<Finding[]>({
-    reducer: (a, b) => [...(a ?? []), ...(b ?? [])],
-    default: () => [],
-  }),
   securityFindings: Annotation<Finding[]>({
     reducer: (a, b) => [...(a ?? []), ...(b ?? [])],
     default: () => [],

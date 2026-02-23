@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import fs from "fs/promises";
-import { ASTService } from "../../app/services/ast.service.js";
+import { ASTService } from "../../app/services/ast.service";
 
 vi.mock("fs/promises");
 

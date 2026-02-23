@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { execSync } from "child_process";
-import { SemgrepService } from "../../app/services/semgrep.service.js";
+import { SemgrepService } from "../../app/services/semgrep.service";
 
 vi.mock("child_process");
 

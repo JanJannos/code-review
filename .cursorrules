@@ -6,7 +6,9 @@ Do not explain the rules. Just follow them.
 
 CORE RULES:
 - Always be concise and direct.
-- Always write in TypeScript and ESM, not CommonJS and JS
+- Always use config folder for configuration values and put ion config yaml
+- Always write in TypeScript and ESM, not CommonJS and JavaScript
+- Never ever import frpom JS files in TS project 
 - Always use config folder for configuration stuff
 - Constant values should be in constants file
 - MD files and docs should be in docs folder except the main Readme.MD
@@ -17,6 +19,8 @@ CORE RULES:
 - Always say: "Jan, this is what we did so far" and they give your pitch
 - If the request is ambiguous, ask one short clarifying question.
 - Do not apologize.
-- At the end of every answer, append a git commit command with git add -A, -a, -m, and line breaks (multiple -m or backslash continuation), summarizing the changes made.
+- At the end of every answer, give me a git commit with all that we did from the beginning of the changeset with git add -A, -a, -m, and line breaks  (multiple -m or backslash continuation), summarizing the changes made.
+- Agents should always either speak with each other or speak with LLM
+- Always have a high level sketch of the system the Readme.MD 
 
 ==================== END OF RULES ====================

@@ -1,13 +1,7 @@
-import { ChatAnthropic } from "@langchain/anthropic";
-import { ReviewState, Finding } from "../graph/state.js";
-import { SemgrepService } from "../services/semgrep.service.js";
-import { MODELS, DIFF_LIMITS } from "../constants.js";
+import { ReviewState, Finding } from "../graph/state";
+import { DIFF_LIMITS } from "../config";
+import { chatModelLarge } from "../llm/chat-model";
 import { v4 as uuid } from "uuid";
-
-const model = new ChatAnthropic({
-  model: MODELS.SONNET,
-  temperature: 0,
-});
 
 function parseFindings(raw: string): Omit<Finding, "id" | "agent">[] {
   const cleaned = raw.replace(/```json|```/g, "").trim();
@@ -20,16 +14,11 @@ function parseFindings(raw: string): Omit<Finding, "id" | "agent">[] {
 }
 
 export async function securityNode(state: ReviewState): Promise<Partial<ReviewState>> {
-  const semgrep = new SemgrepService();
-  const semgrepResults = await semgrep.scan(state.files);
-
+  console.log("[security] LLM call...");
   const prompt = `
-You are a senior application security engineer. Analyze this pull request diff and Semgrep findings
-for security vulnerabilities. Focus on: OWASP Top 10, hardcoded secrets, injection attacks,
-broken auth, insecure dependencies, improper input validation, unsafe deserialization.
-
-SEMGREP FINDINGS:
-${JSON.stringify(semgrepResults, null, 2)}
+You are a senior application security engineer. Analyze this pull request diff for security vulnerabilities.
+Focus on: OWASP Top 10, hardcoded secrets, injection attacks, broken auth, improper input validation,
+unsafe deserialization, eval() misuse, SQL injection, XSS.
 
 DIFF:
 ${state.diff.slice(0, DIFF_LIMITS.DEFAULT)}
@@ -38,7 +27,7 @@ Return ONLY a JSON array of findings with: severity, file, line, title, descript
 Be conservative — only report real issues with clear evidence.
 `;
 
-  const response = await model.invoke([{ role: "user", content: prompt }]);
+  const response = await chatModelLarge.invoke(prompt);
   const raw = (response.content as string) ?? "[]";
   const parsed = parseFindings(raw);
 
@@ -48,5 +37,6 @@ Be conservative — only report real issues with clear evidence.
     agent: "security",
   }));
 
+  console.log(`[security] Done. ${securityFindings.length} findings.`);
   return { securityFindings };
 }

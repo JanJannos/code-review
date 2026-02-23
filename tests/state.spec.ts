@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { FindingSchema, ReviewStateAnnotation } from "../app/graph/state.js";
+import { FindingSchema, ReviewStateAnnotation } from "../app/graph/state";
 
 describe("FindingSchema", () => {
   it("validates a valid finding", () => {
@@ -46,6 +46,6 @@ describe("ReviewStateAnnotation", () => {
   it("has spec with expected keys", () => {
     expect(ReviewStateAnnotation.spec).toBeDefined();
     expect(ReviewStateAnnotation.spec).toHaveProperty("prUrl");
-    expect(ReviewStateAnnotation.spec).toHaveProperty("staticFindings");
+    expect(ReviewStateAnnotation.spec).toHaveProperty("securityFindings");
   });
 });

@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { buildReviewGraph } from "../graph/review.graph.js";
+import { buildReviewGraph } from "../graph/review.graph";
 
 export const webhookRouter = Router();
 
@@ -26,7 +26,6 @@ webhookRouter.post("/github", async (req: Request, res: Response) => {
       diff: "",
       files: [],
       language: "",
-      staticFindings: [],
       securityFindings: [],
       architectureFindings: [],
       testFindings: [],

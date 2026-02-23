@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import express, { Express } from "express";
 import request from "supertest";
 
-vi.mock("../../app/graph/review.graph.js", () => ({
+vi.mock("../../app/graph/review.graph", () => ({
   buildReviewGraph: vi.fn().mockReturnValue({
     invoke: vi.fn().mockResolvedValue({}),
   }),
@@ -13,7 +13,7 @@ describe("webhook controller", () => {
 
   beforeEach(async () => {
     vi.resetModules();
-    const { webhookRouter } = await import("../../app/api/webhook.controller.js");
+    const { webhookRouter } = await import("../../app/api/webhook.controller");
     app = express();
     app.use(express.json());
     app.use("/webhook", webhookRouter);

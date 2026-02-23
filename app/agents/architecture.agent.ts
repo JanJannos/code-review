@@ -1,13 +1,8 @@
-import { ChatAnthropic } from "@langchain/anthropic";
-import { ReviewState, Finding } from "../graph/state.js";
-import { KnowledgeBaseService } from "../services/knowledge-base.service.js";
-import { MODELS, DIFF_LIMITS } from "../constants.js";
+import { ReviewState, Finding } from "../graph/state";
+import { KnowledgeBaseService } from "../services/knowledge-base.service";
+import { DIFF_LIMITS } from "../config";
+import { chatModelFast } from "../llm/chat-model";
 import { v4 as uuid } from "uuid";
-
-const model = new ChatAnthropic({
-  model: MODELS.SONNET,
-  temperature: 0,
-});
 
 function parseFindings(raw: string): Omit<Finding, "id" | "agent">[] {
   const cleaned = raw.replace(/```json|```/g, "").trim();
@@ -20,6 +15,7 @@ function parseFindings(raw: string): Omit<Finding, "id" | "agent">[] {
 }
 
 export async function architectureNode(state: ReviewState): Promise<Partial<ReviewState>> {
+  console.log("[architecture] LLM call...");
   const kb = new KnowledgeBaseService();
   const relevantADRs = await kb.search(state.diff.slice(0, DIFF_LIMITS.ADR_SEARCH));
 
@@ -37,7 +33,7 @@ ${state.diff.slice(0, DIFF_LIMITS.DEFAULT)}
 Return ONLY a JSON array of findings with: severity, file, line, title, description, suggestion.
 `;
 
-  const response = await model.invoke([{ role: "user", content: prompt }]);
+  const response = await chatModelFast.invoke(prompt);
   const raw = (response.content as string) ?? "[]";
   const parsed = parseFindings(raw);
 
@@ -47,5 +43,6 @@ Return ONLY a JSON array of findings with: severity, file, line, title, descript
     agent: "architecture",
   }));
 
+  console.log(`[architecture] Done. ${architectureFindings.length} findings.`);
   return { architectureFindings };
 }
