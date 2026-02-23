@@ -9,6 +9,7 @@ export default defineConfig({
     globals: true,
     environment: "node",
     include: ["tests/**/*.spec.ts"],
+    reporter: "verbose",
   },
   resolve: {
     alias: {

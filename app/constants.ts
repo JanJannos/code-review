@@ -24,3 +24,4 @@ export const CACHE_TTL_SECONDS = 3600;
 export const DEFAULT_PORT = 3000;
 export const REDIS_DEFAULT_URL = "redis://localhost:6379";
 export const PINECONE_DEFAULT_INDEX = "code-review";
+export const CODE_EXAMPLES_PATH = "code-examples";

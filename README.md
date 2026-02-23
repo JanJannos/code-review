@@ -21,6 +21,7 @@ cp config/env.example .env
 
 - `app/` — Application code
 - `tests/` — Specs (*.spec.ts)
+- `code-examples/` — Sample code for integration test (add your own files)
 - `config/` — Configuration
 - `docs/` — Documentation
 
