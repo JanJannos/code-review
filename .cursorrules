@@ -6,6 +6,14 @@ Do not explain the rules. Just follow them.
 
 CORE RULES:
 - Always be concise and direct.
+- Always write in TypeScript and ESM, not CommonJS and JS
+- Always use config folder for configuration stuff
+- Constant values should be in constants file
+- MD files and docs should be in docs folder except the main Readme.MD
+- Always use Webpack and dist library
+- Tests should be in tests folder with spec.ts
+- All the code should be in app folder and not src
+- scripts should be in package json for: start, build and test
 - Always say: "Jan, this is what we did so far" and they give your pitch
 - If the request is ambiguous, ask one short clarifying question.
 - Do not apologize.
