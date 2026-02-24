@@ -5,7 +5,7 @@ import { MODELS } from "../config";
 
 type ChatModel = InstanceType<typeof ChatGroq> | InstanceType<typeof ChatAnthropic>;
 
-const createModel = (tier: "large" | "fast"): ChatModel => {
+export const createModel = (tier: "large" | "fast"): ChatModel => {
   if (process.env.GROQ_API_KEY) {
     return new ChatGroq({
       model: tier === "large" ? MODELS.GROQ_LARGE : MODELS.GROQ_FAST,

@@ -1,17 +1,9 @@
 import { ReviewState, Finding } from "../graph/state";
 import { DIFF_LIMITS } from "../config";
 import { chatModelLarge } from "../llm/chat-model";
-import { v4 as uuid } from "uuid";
+import { parseFindings, makeFindingsWithAgent } from "../closures";
 
-const parseFindings = (raw: string): Omit<Finding, "id" | "agent">[] => {
-  const cleaned = raw.replace(/```json|```/g, "").trim();
-  try {
-    const parsed = JSON.parse(cleaned);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-};
+const toSecurityFindings = makeFindingsWithAgent("security");
 
 export const securityNode = async (state: ReviewState): Promise<Partial<ReviewState>> => {
   console.log("[security] LLM call...");
@@ -29,13 +21,7 @@ Be conservative — only report real issues with clear evidence.
 
   const response = await chatModelLarge.invoke(prompt);
   const raw = (response.content as string) ?? "[]";
-  const parsed = parseFindings(raw);
-
-  const securityFindings: Finding[] = parsed.map((f) => ({
-    ...f,
-    id: uuid(),
-    agent: "security",
-  }));
+  const securityFindings: Finding[] = toSecurityFindings(parseFindings(raw));
 
   console.log(`[security] Done. ${securityFindings.length} findings.`);
   return { securityFindings };

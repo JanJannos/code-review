@@ -1,19 +1,12 @@
 import path from "path";
-import { ReviewState, Finding } from "../graph/state";
+import { ReviewState } from "../graph/state";
 import { NotificationService } from "../services/notification.service";
 import { ReportService } from "../services/report.service";
 import { SEVERITY_SCORE } from "../config";
 import { chatModelFast } from "../llm/chat-model";
+import { deduplicateFindings, createOverallScore } from "../closures";
 
-const deduplicateFindings = (findings: Finding[]): Finding[] => {
-  const seen = new Set<string>();
-  return findings.filter((f) => {
-    const key = `${f.file}:${f.line ?? ""}:${f.title}`;
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
-};
+const getOverallScore = createOverallScore(SEVERITY_SCORE);
 
 export const aggregatorNode = async (state: ReviewState): Promise<Partial<ReviewState>> => {
   const allFindings = deduplicateFindings([
@@ -23,11 +16,7 @@ export const aggregatorNode = async (state: ReviewState): Promise<Partial<Review
     ...state.docFindings,
   ]);
 
-  const totalScore = allFindings.reduce(
-    (sum, f) => sum + (SEVERITY_SCORE[f.severity] ?? 0),
-    0
-  );
-  const overallScore = Math.max(0, 100 - totalScore);
+  const overallScore = getOverallScore(allFindings);
 
   const reviewedFiles = state.files.map((f) => path.basename(f));
 
